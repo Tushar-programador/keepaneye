@@ -1,30 +1,37 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-const UserSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
-    id: {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
     },
-    url: {
+    password: {
       type: String,
       required: true,
-      unique: true,
-      match: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w.-]*)*\/?$/,
-      index: true,
     },
-
-    assignedServer: { type: String, required: true }, 
-    status: {
+    role: {
       type: String,
-      enum: ["Pending", "In Progress", "Completed", "Failed"],
-      default: "Pending",
+      enum: ["Admin", "Member"],
+      default: "Member",
     },
-    interval: { type: Number, required: true, default: 5 }, 
-    lastChecked: { type: Date, default: null }, 
-    createdAt: { type: Date, default: Date.now },
+    organization: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Organization",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true }
 );
 
+module.exports = mongoose.model("User", userSchema);
