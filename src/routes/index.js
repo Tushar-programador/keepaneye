@@ -1,9 +1,10 @@
-import express from 'express';
+import express from "express";
 const router = express.Router();
-import user from "./user.routes.js"
+import user from "./user.routes.js";
 
-router.use("/user",user)
+import organization from "./organization.routes.js";
 
+router.use("/user", user);
+router.use("/organization", organization);
 
-
-export default router
+export default router;

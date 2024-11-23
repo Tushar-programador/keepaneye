@@ -1,6 +1,6 @@
 import User from "../models/user.model.js"; // Import User schema
 import mongoose from "mongoose";
-import Organization from "../models/organisation.model.js"; // Import Organization schema
+import Organization from "../models/organization.model.js"; // Import Organization schema
 import { hash, compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../configs/env.js";
@@ -16,10 +16,10 @@ const UserController = {
   async register(req, res) {
     try {
       const { name, email, password, organizationId } = req.body;
-      console.log("Register")
-      console.log(name, email, password, organizationId,);
+      console.log("Register");
+      console.log(name, email, password, organizationId);
       // Check if email is already registered
-      const existingUser = await  User.findOne({ email });
+      const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(400).json({ error: "Email already in use." });
       }
@@ -42,12 +42,10 @@ const UserController = {
 
       await newUser.save();
 
-      res
-        .status(201)
-        .json({
-          message: "User registered successfully.",
-          userId: newUser._id,
-        });
+      res.status(201).json({
+        message: "User registered successfully.",
+        userId: newUser._id,
+      });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Server error. Please try again later." });
@@ -60,9 +58,9 @@ const UserController = {
   async login(req, res) {
     try {
       const { email, password } = req.body;
-
+      console.log(email, password);
       // Find the user by email
-      const user = await findOne({ email });
+      const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).json({ error: "Invalid email or password." });
       }
@@ -74,11 +72,11 @@ const UserController = {
       }
 
       // Generate a JWT token
-      const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+      const Authorization = jwt.sign({ userId: user._id }, JWT_SECRET, {
         expiresIn: "1d",
       });
 
-      res.status(200).json({ message: "Login successful.", token });
+      res.status(200).json({ message: "Login successful.", Authorization });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Server error. Please try again later." });
@@ -90,11 +88,11 @@ const UserController = {
    */
   async getProfile(req, res) {
     try {
-      const { userId } = req.user; // Extract from middleware
-      const user = await findById(userId).populate("organization", "name");
+      const user = await User.findById(req.user._id);
       if (!user) {
         return res.status(404).json({ error: "User not found." });
       }
+      console.log(user);
 
       res.status(200).json({
         user: {
@@ -115,11 +113,12 @@ const UserController = {
    */
   async updateProfile(req, res) {
     try {
-      const { userId } = req.user; // Extract from middleware
-      const { name, email, password } = req.body;
-
+      console.log(req.params);
+      const  userId = req.params.id; // Extract from middleware
+      const { name, email, password,role} = req.body;
+        
       // Find the user by ID
-      const user = await findById(userId);
+      const user = await User.findById(userId);
       if (!user) {
         return res.status(404).json({ error: "User not found." });
       }
@@ -131,6 +130,7 @@ const UserController = {
         const hashedPassword = await hash(password, 10);
         user.password = hashedPassword;
       }
+      if(role) user.role = role;
 
       await user.save();
 
@@ -146,10 +146,10 @@ const UserController = {
    */
   async deleteAccount(req, res) {
     try {
-      const { userId } = req.user; // Extract from middleware
+      const  userId  = req.params.id; // Extract from middleware
 
       // Delete user by ID
-      const deletedUser = await findByIdAndDelete(userId);
+      const deletedUser = await  User.findByIdAndDelete(userId);
       if (!deletedUser) {
         return res.status(404).json({ error: "User not found." });
       }
