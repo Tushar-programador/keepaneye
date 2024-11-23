@@ -1,7 +1,8 @@
-import {User} from "../models/user.model.js"; // Import User schema
-import { findById as _findById } from "../models/organisation.model.js"; // Import Organization schema
+import User from "../models/user.model.js"; // Import User schema
+import mongoose from "mongoose";
+import Organization from "../models/organisation.model.js"; // Import Organization schema
 import { hash, compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { jwtSecret } from "../configs/env.js";
 
 // Secret key for JWT
@@ -15,23 +16,24 @@ const UserController = {
   async register(req, res) {
     try {
       const { name, email, password, organizationId } = req.body;
-
+      console.log("Register")
+      console.log(name, email, password, organizationId,);
       // Check if email is already registered
-      const existingUser = await findOne({ email });
+      const existingUser = await  User.findOne({ email });
       if (existingUser) {
         return res.status(400).json({ error: "Email already in use." });
       }
 
-      const organization = await _findById(organizationId);
-      if (!organization) {
-        return res.status(404).json({ error: "Organization not found." });
-      }
+      const organization = await Organization.findById(organizationId);
+      // if (!organization) {
+      //   return res.status(404).json({ error: "Organization not found." });
+      // }
 
       // Hash the password
       const hashedPassword = await hash(password, 10);
 
       // Create a new user
-      const newUser = new User({
+      const newUser = await User.create({
         name,
         email,
         password: hashedPassword,
@@ -72,7 +74,7 @@ const UserController = {
       }
 
       // Generate a JWT token
-      const token = sign({ userId: user._id }, JWT_SECRET, {
+      const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
         expiresIn: "1d",
       });
 
