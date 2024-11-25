@@ -8,8 +8,8 @@ router.post("/login", UserController.login);
 
 router.get("/me", accessToken, UserController.getProfile);
 
-router.patch("/update/:id", UserController.updateProfile);
+router.patch("/update/:id",accessToken, UserController.updateProfile);
 
-router.delete("/delete/:id", UserController.deleteAccount);
+router.delete("/delete/:id",accessToken, UserController.deleteAccount);
 
 export default router;

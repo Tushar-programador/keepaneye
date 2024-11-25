@@ -25,13 +25,12 @@ const UserController = {
       }
 
       const organization = await Organization.findById(organizationId);
-      // if (!organization) {
-      //   return res.status(404).json({ error: "Organization not found." });
-      // }
-
+      if (!organization) {
+        return res.status(404).json({ error: "Organization not found." });
+      }
       // Hash the password
       const hashedPassword = await hash(password, 10);
-
+      
       // Create a new user
       const newUser = await User.create({
         name,
@@ -39,6 +38,7 @@ const UserController = {
         password: hashedPassword,
         organization: organizationId,
       });
+      await organization.updateOne(members.push([newUser]))
 
       await newUser.save();
 
