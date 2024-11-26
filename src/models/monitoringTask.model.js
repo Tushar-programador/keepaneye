@@ -28,18 +28,22 @@ const monitoringTaskSchema = new mongoose.Schema(
       ref: "Organization",
       required: true,
     },
-    failoverServers: [
-      {
-        serverId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "GeoServer",
-        },
-        isPrimary: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
+    isUp:{
+      type: Boolean,
+      default: false,
+    }
+    // failoverServers: [
+    //   {
+    //     serverId: {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       ref: "GeoServer",
+    //     },
+    //     isPrimary: {
+    //       type: Boolean,
+    //       default: false,
+    //     },
+    //   },
+    // ],
   },
   { timestamps: true }
 );
