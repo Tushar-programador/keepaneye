@@ -1,8 +1,9 @@
 import exprss from "express"
+import accessToken from "../middlewares/auth";
 
 const router = exprss.Router()
 
 
-router.get('/', function(req, res   ){});
+router.get('/', accessToken,);
 
 export default router
