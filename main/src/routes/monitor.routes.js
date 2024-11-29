@@ -1,9 +1,13 @@
-import exprss from "express"
-import accessToken from "../middlewares/auth";
+import exprss from "express";
+import accessToken from "../middlewares/auth.js";
+import {
+  assignTasksToGeoServers,
+  updateStatus,
+} from "../controllers/monitor.controllers.js";
 
-const router = exprss.Router()
+const router = exprss.Router();
 
+router.get("/", accessToken, assignTasksToGeoServers);
+router.post("/update-status", accessToken, updateStatus);
 
-router.get('/', accessToken,);
-
-export default router
+export default router;

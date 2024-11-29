@@ -28,3 +28,21 @@ export const assignTasksToGeoServers = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const updateStatus = async (req, res) => {
+  try {
+    const { websiteId, isUp } = req.body;
+
+    // Update website status in the database
+    const website = await Website.findById(websiteId);
+    if (website) {
+      website.isUp = isUp;
+      website.lastChecked = new Date();
+      await website.save();
+    }
+
+    res.status(200).json({ message: "Website status updated" });
+  } catch (error) {
+    console.error("Error updating status:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};

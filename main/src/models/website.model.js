@@ -11,6 +11,12 @@ const websiteSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    owner:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",  //*Assuming User is a collection with an ObjectId field named '_id'
+      required: true,
+      
+    },
     status: {
       type: String,
       enum: ["Active", "Inactive"],
