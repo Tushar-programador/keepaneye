@@ -30,7 +30,7 @@ const UserController = {
       }
       // Hash the password
       const hashedPassword = await hash(password, 10);
-      
+
       // Create a new user
       const newUser = await User.create({
         name,
@@ -38,13 +38,16 @@ const UserController = {
         password: hashedPassword,
         organization: organizationId,
       });
-      await organization.updateOne(members.push([newUser]))
+      // await organization.updateOne(members.push([newUser]))
 
       await newUser.save();
-
+      const Authorization = jwt.sign({ userId: newUser._id }, JWT_SECRET, {
+        expiresIn: "8d",
+      });
       res.status(201).json({
         message: "User registered successfully.",
         userId: newUser._id,
+        Authorization,
       });
     } catch (err) {
       console.error(err);
@@ -114,9 +117,9 @@ const UserController = {
   async updateProfile(req, res) {
     try {
       console.log(req.params);
-      const  userId = req.params.id; // Extract from middleware
-      const { name, email, password,role} = req.body;
-        
+      const userId = req.params.id; // Extract from middleware
+      const { name, email, password, role } = req.body;
+
       // Find the user by ID
       const user = await User.findById(userId);
       if (!user) {
@@ -130,7 +133,7 @@ const UserController = {
         const hashedPassword = await hash(password, 10);
         user.password = hashedPassword;
       }
-      if(role) user.role = role;
+      if (role) user.role = role;
 
       await user.save();
 
@@ -146,10 +149,10 @@ const UserController = {
    */
   async deleteAccount(req, res) {
     try {
-      const  userId  = req.params.id; // Extract from middleware
+      const userId = req.params.id; // Extract from middleware
 
       // Delete user by ID
-      const deletedUser = await  User.findByIdAndDelete(userId);
+      const deletedUser = await User.findByIdAndDelete(userId);
       if (!deletedUser) {
         return res.status(404).json({ error: "User not found." });
       }

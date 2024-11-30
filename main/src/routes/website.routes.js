@@ -6,12 +6,13 @@ import {
   updateWebsite,
   deleteWebsite,
 } from "../controllers/website.controller.js";
+import accessToken from "../middlewares/auth.js";
 
 const router = express.Router();
-router.post("/", createWebsite);
-router.get("/", getAllWebsites);
-router.get("/:id", getWebsiteById);
-router.put("/:id", updateWebsite);
-router.delete("/:id", deleteWebsite);
+router.post("/", accessToken, createWebsite);
+router.get("/", accessToken, getAllWebsites);
+router.get("/:id", accessToken, getWebsiteById);
+router.put("/:id", accessToken, updateWebsite);
+router.delete("/:id", accessToken, deleteWebsite);
 
 export default router;

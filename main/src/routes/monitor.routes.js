@@ -3,7 +3,7 @@ import accessToken from "../middlewares/auth.js";
 import {
   assignTasksToGeoServers,
   updateStatus,
-} from "../controllers/monitor.controllers.js";
+} from "../controllers/websiteMonitor.controllers.js";
 
 const router = exprss.Router();
 

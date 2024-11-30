@@ -11,20 +11,23 @@ const websiteSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
-    owner:{
+    owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",  //*Assuming User is a collection with an ObjectId field named '_id'
+      ref: "User", //*Assuming User is a collection with an ObjectId field named '_id'
       required: true,
-      
     },
     status: {
       type: String,
-      enum: ["Active", "Inactive"],
-      default: "Active",
+      enum: ["UP", "DOWN"],
+      default: null,
     },
     lastUpdated: {
       type: Date,
       default: Date.now,
+    },
+    responseTime: {
+      type: Number,
+      default: 0,
     },
     lastChecked: {
       type: Date,
@@ -34,7 +37,7 @@ const websiteSchema = mongoose.Schema(
     //   type: mongoose.Schema.Types.ObjectId,
     //   ref: "GeoServer",
     // },
-    regin: {
+    region: {
       type: String,
       required: true,
       enum: ["US", "Europe", "India"],
@@ -42,3 +45,5 @@ const websiteSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+const websites = mongoose.model("Websites", websiteSchema);
+export default websites;
