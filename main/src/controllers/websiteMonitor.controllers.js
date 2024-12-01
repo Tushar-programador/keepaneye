@@ -5,9 +5,9 @@ import axios from "axios";
 export const assignTasksToGeoServers = async (req, res) => {
   try {
     // Fetch all websites and group them by region
-    console.log(1);
+    
     const AllWebsites = await websites.find();
-    console.log(2);
+    
 
     if (websites.length === 0) {
       return res.status(404).json({
@@ -21,7 +21,7 @@ export const assignTasksToGeoServers = async (req, res) => {
       Europe: AllWebsites.filter((site) => site.region === "Europe"),
       India: AllWebsites.filter((site) => site.region === "India"),
     };
-    console.log(regions);
+
     // Send tasks to respective geo servers
     // await axios.post("http://US_SERVER_URL/assign-task", {
     //   websites: regions.US,

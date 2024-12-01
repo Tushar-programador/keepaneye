@@ -6,6 +6,7 @@ export default async function accessToken(req, res, next) {
     req.cokkies?.token || req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
+    console.log("Access token");
     return res.status(401).json({ message: "Unauthorized Request" });
   }
   const decrypt = jwt.verify(token, jwtSecret);
