@@ -23,7 +23,8 @@ app.post("/assign-task", (req, res) => {
 cron.schedule("*/3 * * * *", async () => {
   console.log("Cron job started...");
   const results = await monitorWebsites(monitoredWebsites);
-
+  console.log("results");
+  console.log(results);
   // Send all results back to the server in parallel
   await sendResultsToServer(results);
 
@@ -53,7 +54,7 @@ const monitorWebsites = async (websites) => {
       });
       const endTime = Date.now();
       const responseTime = endTime - startTime;
-
+      console.log(site.id);
       console.log(
         `Website ${site.url} is UP. Response time: ${responseTime} ms`
       );
