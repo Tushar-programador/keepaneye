@@ -5,9 +5,8 @@ import axios from "axios";
 export const assignTasksToGeoServers = async (req, res) => {
   try {
     // Fetch all websites and group them by region
-    
+
     const AllWebsites = await websites.find();
-    
 
     if (websites.length === 0) {
       return res.status(404).json({
@@ -15,7 +14,7 @@ export const assignTasksToGeoServers = async (req, res) => {
         message: "No websites found to assign tasks",
       });
     }
-    
+
     const regions = {
       US: AllWebsites.filter((site) => site.region === "US"),
       Europe: AllWebsites.filter((site) => site.region === "Europe"),
@@ -29,9 +28,19 @@ export const assignTasksToGeoServers = async (req, res) => {
     // await axios.post("http://EUROPE_SERVER_URL/assign-task", {
     //   websites: regions.Europe,
     // });
-    await axios.post("http://localhost:5001/assign-task", {
-      websites: regions.India,
-    });
+    console.log("Assign tasks");
+    await axios.post(
+      "http://localhost:5001/assign-task",
+
+      {
+        websites: regions.India,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     res.status(200).json({ message: "Tasks assigned to geo servers" });
   } catch (error) {
@@ -41,17 +50,16 @@ export const assignTasksToGeoServers = async (req, res) => {
 };
 export const updateStatus = async (req, res) => {
   try {
-    console.log(req.body)
+    console.log(req.body);
     const { websiteId, isUp } = req.body;
-    if (!websiteId || typeof isUp!== "boolean") {
+    if (!websiteId || typeof isUp !== "boolean") {
       return res.status(400).json({
         success: false,
         message: "Invalid request body",
       });
     }
     // Check if website exists
-   
-    
+
     // Update website status in the database
     const website = await websites.findById(websiteId);
     if (!website) {
