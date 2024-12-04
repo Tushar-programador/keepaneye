@@ -194,4 +194,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 For queries or suggestions, feel free to reach out:
 
 - **Email:** tusharkalra307@gmail.com
-- **LinkedIn:** [tushar-kalra-developer](https://www.linkedin.com/in/your-username)
+- **LinkedIn:** [tushar-kalra-developer](https://www.linkedin.com/in/tushar-kalra-developer/)
