@@ -45,5 +45,6 @@ const websiteSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
 const websites = mongoose.model("Websites", websiteSchema);
 export default websites;
