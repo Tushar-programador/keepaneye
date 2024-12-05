@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 const accessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQyM2JiMjY3NTU4Nzg3Yzg3ZWQ4YTkiLCJpYXQiOjE3MzMyNTcxMjksImV4cCI6MTczMzM0MzUyOX0.o_pDjHyWaQappl1YXiw8RyVg_PHMomiJzSYIRskCNn8";
-  app.use(express.json());
+app.use(express.json());
 app.use(express.text());
 
 let websites = []; // List of websites to monitor
@@ -49,15 +49,19 @@ cron.schedule("* * * * *", async () => {
     console.log("Monitoring Results:", results);
 
     // Send results to the main server
-    await axios.post("http://localhost:8000/v1/api/monitor/update-status", {
-      accessToken,
-      data: results, // Send the updated website statuses
-    },{
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}`,
+    await axios.post(
+      "http://localhost:8000/v1/api/monitor/update-status",
+      {
+        accessToken,
+        data: results, // Send the updated website statuses
       },
-    });
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     console.log("Monitoring results sent to the main server.");
   } catch (error) {
     console.error("Error during monitoring:", error.message);
@@ -68,4 +72,7 @@ cron.schedule("* * * * *", async () => {
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Geo server running on port ${PORT}`);
+});
+app.get("/", (req, res) => {
+  res.render("index");
 });
