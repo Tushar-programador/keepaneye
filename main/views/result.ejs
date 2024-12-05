@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Results</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Website Monitoring Results</h1>
+  </header>
+  <main>
+    <h2>Monitoring Summary</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Website Name</th>
+          <th>URL</th>
+          <th>Status</th>
+          <th>Response Time (ms)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% results.forEach(result => { %>
+          <tr>
+            <td><%= result.name %></td>
+            <td><a href="<%= result.url %>" target="_blank"><%= result.url %></a></td>
+            <td class="<%= result.status === 'UP' ? 'up' : 'down' %>"><%= result.status %></td>
+            <td><%= result.responseTime %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <a href="/">Go Back</a>
+  </main>
+</body>
+</html>

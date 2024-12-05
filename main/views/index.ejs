@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Monitoring</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Website Monitoring Tool</h1>
+  </header>
+  <main>
+    <form action="/assign-task" method="POST">
+      <h2>Add Websites for Monitoring</h2>
+      <div id="websites">
+        <div class="website">
+          <label>Website Name:</label>
+          <input type="text" name="websites[0][name]" required>
+          <label>Website URL:</label>
+          <input type="url" name="websites[0][url]" required>
+        </div>
+      </div>
+      <button type="button" onclick="addWebsite()">Add More Websites</button>
+      <button type="submit">Start Monitoring</button>
+    </form>
+  </main>
+  <script>
+    let websiteCount = 1;
+
+    function addWebsite() {
+      const websitesDiv = document.getElementById('websites');
+      const newWebsite = document.createElement('div');
+      newWebsite.classList.add('website');
+      newWebsite.innerHTML = `
+        <label>Website Name:</label>
+        <input type="text" name="websites[${websiteCount}][name]" required>
+        <label>Website URL:</label>
+        <input type="url" name="websites[${websiteCount}][url]" required>
+      `;
+      websitesDiv.appendChild(newWebsite);
+      websiteCount++;
+    }
+  </script>
+</body>
+</html>
