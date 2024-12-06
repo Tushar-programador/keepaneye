@@ -10,9 +10,9 @@ const accessToken =
 app.use(express.json());
 app.use(express.text());
 
-let websites = []; // List of websites to monitor
+let websites = []; 
 
-// Endpoint to assign the list of websites to monitor
+// Endpoint to assign websites for monitoring
 app.post("/assign-task", async (req, res) => {
   websites = req.body.websites; // Update the list of websites to monitor
   if (!websites || !Array.isArray(websites)) {
