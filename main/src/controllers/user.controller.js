@@ -1,6 +1,6 @@
-import User from "../models/user.model.js"; // Import User schema
+import User from "../models/user.model.js"; 
 import mongoose from "mongoose";
-import Organization from "../models/organization.model.js"; // Import Organization schema
+import Organization from "../models/organization.model.js"; 
 import { hash, compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../configs/env.js";
@@ -10,9 +10,7 @@ const JWT_SECRET = jwtSecret;
 
 // Controller object
 const UserController = {
-  /**
-   * Register a new user
-   */
+ 
   async register(req, res) {
     try {
       const { name, email, password, organizationId } = req.body;
